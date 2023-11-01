@@ -5,6 +5,7 @@ class CreateValidationCodes < ActiveRecord::Migration[7.0]
       t.integer :kind, default: 1, null: false
       t.datetime :used_at
       t.string :code, limit:100
+      
       t.timestamps
     end
   end
