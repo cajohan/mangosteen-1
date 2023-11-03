@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  get 'validation_codes/create'
+  # get 'home/index'
+  # get 'validation_codes/create'
   # post '/users', to: 'users#create'
   # get '/users/:id', to: 'users#show'
   # post '/validation_codes', to: 'validationCodes#create'
+  get '/', to: 'home#index'
 
   namespace :api do
     namespace :v1 do
