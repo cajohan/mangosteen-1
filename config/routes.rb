@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # /api/v1
       resources :validation_codes, only: [:create]
-      resource :sessions, only: [:create, :destroy]
+      resource :session, only: [:create, :destroy]
       resource :me, only: [:show]
       resources :items
       resources :tags
