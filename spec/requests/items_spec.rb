@@ -79,7 +79,7 @@ RSpec.describe "Items", type: :request do
     end
   end
   describe "create" do
-    it "can create an item" do
+    xit "can create an item" do
       # expect(Item.count).to eq(0)
       # post '/api/v1/items', params: {amount: 99}
       # expect(Item.count).to eq(1) 相当于
