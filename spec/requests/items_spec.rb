@@ -17,28 +17,26 @@ RSpec.describe "Items", type: :request do
       # json = JSON.parse response.body
       # jwt = json['jwt']
 
-      headers = sign_in user1
-      get '/api/v1/items', headers: headers
+      get '/api/v1/items', headers: user1.generate_auth_header
       expect(Item.count).to eq(22)
       # get '/api/v1/items', headers: {"Authorization": "Bearer #{jwt}"}
-      get '/api/v1/items?page=1', headers: headers
+      get '/api/v1/items?page=1', headers: user1.generate_auth_header
       expect(response).to have_http_status(200)
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq(10)
       # get '/api/v1/items?page=2', headers: {"Authorization": "Bearer #{jwt}"}
-      get '/api/v1/items?page=2', headers: headers
+      get '/api/v1/items?page=2', headers: user1.generate_auth_header
       expect(response).to have_http_status(200)
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq(1)
-      p '---------'
     end
     it "按时间筛选" do
       user1 = User.create email: '1@qq.com'
       item1 = Item.create amount: 100, created_at: '2018-01-02', user_id: user1.id
       item2 = Item.create amount: 100, created_at: '2018-01-02', user_id: user1.id
       item3 = Item.create amount: 100, created_at: '2019-01-01', user_id: user1.id
-      headers = sign_in user1
-      get '/api/v1/items?created_after=2018-01-01&created_before=2018-01-03', headers: headers
+     
+      get '/api/v1/items?created_after=2018-01-01&created_before=2018-01-03', headers: user1.generate_auth_header
       expect(response).to have_http_status 200
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq 2
@@ -50,9 +48,8 @@ RSpec.describe "Items", type: :request do
       # item1 = Item.create amount: 100, created_at: Time.new(2018,1,2,0,0,0,"Z")
       user1 = User.create email: '1@qq.com'
       item1 = Item.create amount: 100, created_at: '2018-01-01', user_id: user1.id
-
-      headers = sign_in user1
-      get '/api/v1/items?created_after=2018-01-01&created_before=2018-01-02', headers: headers
+      
+      get '/api/v1/items?created_after=2018-01-01&created_before=2018-01-02', headers: user1.generate_auth_header
       expect(response).to have_http_status 200
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq 1
@@ -62,8 +59,8 @@ RSpec.describe "Items", type: :request do
       user1 = User.create email: '1@qq.com'
       item1 = Item.create amount: 100, created_at: '2018-01-01', user_id: user1.id
       item2 = Item.create amount: 100, created_at: '2017-01-01', user_id: user1.id
-      headers = sign_in user1
-      get '/api/v1/items?created_after=2018-01-01', headers: headers
+     
+      get '/api/v1/items?created_after=2018-01-01', headers: user1.generate_auth_header
       expect(response).to have_http_status 200
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq 1
@@ -74,8 +71,7 @@ RSpec.describe "Items", type: :request do
       item1 = Item.create amount: 100, created_at: '2018-01-01', user_id: user1.id
       item2 = Item.create amount: 100, created_at: '2019-01-01', user_id: user1.id
 
-      headers = sign_in user1
-      get '/api/v1/items?created_before=2018-01-02', headers: headers
+      get '/api/v1/items?created_before=2018-01-02', headers: user1.generate_auth_header
       expect(response).to have_http_status 200
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq 1
