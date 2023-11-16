@@ -2,6 +2,8 @@ class ValidationCode < ApplicationRecord
   # has_secure_token :code, length: 24
   # email必填
   validates :email, presence: true
+  # email 合法
+  validates :email, format: {with: /\A.+@.+\z/}
 
   before_create :generate_code
   after_create :send_email
