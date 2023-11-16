@@ -6,7 +6,7 @@ RSpec.describe "Me", type: :request do
   describe "获取当前用户" do
     it "登录后成功获取" do
       user = User.create email: 'junhuangc@foxmail.com'
-      post '/api/v1/session', params: {email: 'junhuangc@foxmail.com', code: '231113'}
+      post '/api/v1/session', params: {email: 'junhuangc@foxmail.com', code: '123456'}
       expect(response).to have_http_status(200)
       json = JSON.parse response.body
       jwt = json['jwt']

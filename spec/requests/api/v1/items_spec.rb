@@ -13,7 +13,7 @@ RSpec.describe "Items", type: :request do
       11.times {Item.create amount: 100, user_id: user1.id}
       11.times {Item.create amount: 100, user_id: user2.id}
 
-      # post '/api/v1/session', params: {email: user1.email, code: '231113'}
+      # post '/api/v1/session', params: {email: user1.email, code: '123456'}
       # json = JSON.parse response.body
       # jwt = json['jwt']
 
