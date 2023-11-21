@@ -16,13 +16,31 @@ RSpec.describe "Me", type: :request do
       json = JSON.parse response.body
       expect(json['resource']['id']).to be_a Numeric
     end
-    it "jwt过期" do
+    it "jwt过期 但可以refresh" do
       travel_to Time.now - 3.hours
       user1 = create :user
       jwt = user1.generate_jwt
+      refresh_token = user1.generate_refresh_token
 
       travel_back
-      get '/api/v1/me', headers: {'Authorization': "Bearer #{jwt}"}
+      get '/api/v1/me', headers: {'Authorization': "Bearer #{jwt} #{refresh_token}"}
+      json = JSON.parse response.body
+      p 'json'
+      p json
+      expect(response).to have_http_status(200)
+      new_jwt = json['jwt']
+      get '/api/v1/items', headers: {'Authorization': "Bearer #{new_jwt} #{refresh_token}"}
+      expect(response).to have_http_status(200)
+    end
+    it "jwt过期 且超过7天" do
+      travel_to Time.now - 8.days
+      user1 = create :user
+      jwt = user1.generate_jwt
+      refresh_token = user1.generate_refresh_token
+
+      travel_back
+      get '/api/v1/me', headers: {'Authorization': "Bearer #{jwt} #{refresh_token}"}
+      json = JSON.parse response.body
       expect(response).to have_http_status(401)
     end
     it "jwt没过期" do

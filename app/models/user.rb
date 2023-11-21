@@ -8,6 +8,13 @@ class User < ApplicationRecord
     end
 
     def generate_auth_header
-      {Authorization: "Bearer #{self.generate_jwt}"}
+      {Authorization: "Bearer #{self.generate_jwt} #{self.generate_refresh_token}"}
     end
+
+    def generate_refresh_token
+      refresh_token_payload = { user_id: self.id, exp: (Time.now + 7.days).to_i }
+      JWT.encode refresh_token_payload, Rails.application.credentials.hmac_secret, 'HS256'
+    end
+  
+    
 end
