@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>验证码 API</title>
+    <title>当前用户 API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,48 +106,28 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>验证码 API</h1>
+      <h1>当前用户 API</h1>
 
       <div class="article">
-        <h2>请求发送验证码</h2>
-        <h3>POST /api/v1/validation_codes</h3>
+        <h2>获取当前用户</h2>
+        <h3>GET /api/v1/me</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                    <span class="name">email</span>
-                </td>
-                <td>
-                  <span class="description">Email</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMzMsImV4cCI6MTcwMDU2Mjg5MH0.lE5Z9i2WdT4cxLucPgKwIILfS4I5vbXMWFBAh_AlgyQ
 Accept: application/json
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /api/v1/validation_codes</pre>
+          <pre class="request route highlight">GET /api/v1/me</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">{"email":"1@qq.com"}</pre>
 
 
             <h3>Response</h3>
@@ -158,17 +138,25 @@ X-Content-Type-Options: nosniff
 X-Download-Options: noopen
 X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
-Content-Type: text/plain; charset=utf-8
+Content-Type: application/json; charset=utf-8
 Vary: Accept
-ETag: W/&quot;36a9e7f1c95b82ffb99743e0c5c4ce95&quot;
+ETag: W/&quot;3c65de1cd1a7479f4efa7d996291ba49&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: b0c312bc-6d32-4a58-a189-bba64f45a859
-X-Runtime: 0.011695
-Content-Length: 1</pre>
+X-Request-Id: a19022f4-6e3d-4806-893f-cc7244acb491
+X-Runtime: 0.002052
+Content-Length: 160</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body"> </pre>
+              <pre class="response body">{
+  &quot;resource&quot;: {
+    &quot;id&quot;: 233,
+    &quot;email&quot;: &quot;lynetta_hoppe@sauer-ernser.example&quot;,
+    &quot;name&quot;: null,
+    &quot;created_at&quot;: &quot;2023-11-21T08:34:50.975Z&quot;,
+    &quot;updated_at&quot;: &quot;2023-11-21T08:34:50.975Z&quot;
+  }
+}</pre>
       </div>
     </div>
   </body>

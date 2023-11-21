@@ -56,8 +56,6 @@ class Api::V1::TagsController < ApplicationController
         return head 422
       end
       head 200
-    else
-      render json: {errors: tag.errors}, status: :unprocessable_entity
     end
   end
 end

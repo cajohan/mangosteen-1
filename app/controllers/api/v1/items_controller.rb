@@ -28,6 +28,8 @@ class Api::V1::ItemsController < ApplicationController
   def balance
     current_user_id = request.env["current_user_id"]
     return head :unauthorized if current_user_id.nil?
+    items = Item.where({ user_id: current_user_id })
+      .where({ happen_at: params[:happen_after]..params[:happen_before] })
     income_items = []
     expenses_items = []
     items.each {|item|
