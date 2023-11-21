@@ -4,8 +4,8 @@ class Api::V1::ItemsController < ApplicationController
     return head :unauthorized if current_user_id.nil?
     items = Item.where(user_id: current_user_id)
       .where(happen_at: params[:happen_after]..params[:happen_before])
-      .where(kind: params[:kind])
-      .page(params[:page])
+    items = items.where(kind: params[:kind]) unless params[:kind].blank?
+    items = items.page(params[:page])
     # items = Item.where("id>?",params[start_id]).limit(100) 如果是流形式内容，id需自增数字
     render json: { resources: items, pager: {
              page: params[:page] || 1,
@@ -16,7 +16,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def create
     # tag_ids [] 数组要写后面
-    item = Item.new params.permit(:amount, :happen_at, tag_ids: [] ) 
+    item = Item.new params.permit(:amount, :happen_at, :kind, tag_ids: [])
     item.user_id = request.env['current_user_id']
     if item.save
       render json: { resource: item }
