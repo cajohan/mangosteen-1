@@ -12,8 +12,8 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    # tags_id [] 数组要写后面
-    item = Item.new params.permit(:amount, :happen_at, tags_id: [] ) 
+    # tag_ids [] 数组要写后面
+    item = Item.new params.permit(:amount, :happen_at, tag_ids: [] ) 
     item.user_id = request.env['current_user_id']
     if item.save
       render json: { resource: item }
@@ -35,7 +35,7 @@ class Api::V1::ItemsController < ApplicationController
         hash[key] ||= 0
         hash[key] += item.amount
       else
-        item.tags_id.each do |tag_id|
+        item.tag_ids.each do |tag_id|
           key = tag_id
           hash[key] ||= 0
           hash[key] += item.amount
