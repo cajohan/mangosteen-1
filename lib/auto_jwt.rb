@@ -48,7 +48,6 @@ def refresh_jwt(refresh_token)
   # 返回一个哈希对象，包含成功标志和新生成的 JWT
   if refresh_token_valid?(refresh_token)
     payload_rt = JWT.decode refresh_token, Rails.application.credentials.hmac_secret, true, { algorithm: "HS256" }
-    p payload_rt
     new_jwt = generate_jwt(payload_rt[0]["user_id"])
     { success: true, jwt: new_jwt }
   else
