@@ -25,8 +25,6 @@ RSpec.describe "Me", type: :request do
       travel_back
       get '/api/v1/me', headers: {'Authorization': "Bearer #{jwt} #{refresh_token}"}
       json = JSON.parse response.body
-      p 'json'
-      p json
       expect(response).to have_http_status(200)
       new_jwt = json['jwt']
       get '/api/v1/items', headers: {'Authorization': "Bearer #{new_jwt} #{refresh_token}"}
