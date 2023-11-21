@@ -30,3 +30,4 @@
 /vendor/cache
 /tmp/*.gz
 /config/credentials/production.key
+/doc/api
