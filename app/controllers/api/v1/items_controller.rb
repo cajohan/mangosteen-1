@@ -7,9 +7,8 @@ class Api::V1::ItemsController < ApplicationController
         happen_at: (datetime_with_zone(params[:happen_after])..datetime_with_zone(params[:happen_before]))
       )
     items = items.where(kind: params[:kind]) unless params[:kind].blank?
-    items = items.page(params[:page])
-    # items = Item.where("id>?",params[start_id]).limit(100) 如果是流形式内容，id需自增数字
-    render json: { resources: items, pager: {
+    paged = items.page(params[:page])
+    render json: { resources: paged, pager: {
              page: params[:page] || 1,
              per_page: Item.default_per_page,
              count: items.count,
