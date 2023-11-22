@@ -9,18 +9,18 @@ function set_env {
   hint=$2
   [[ ! -z "${!name}" ]] && return
   while [ -z "${!name}" ]; do
-    [[ ! -z "$hint" ]] && echo "> 请输入 $name: $hint" || echo "> 请输入 $name:" 
+    [[ ! -z "$hint" ]] && echo "> 请输入 $name: $hint" || echo "> 请输入 $name:"
     read $name
   done
   sed -i "1s/^/export $name=${!name}\n/" ~/.bashrc
   echo "${name} 已保存至 ~/.bashrc 。如果需要修改，请自行编辑 ~/.bashrc"
 }
 function title {
-  echo 
+  echo
   echo "###############################################################################"
   echo "## $1"
-  echo "###############################################################################" 
-  echo 
+  echo "###############################################################################"
+  echo
 }
 
 title '设置远程机器的环境变量'
@@ -77,12 +77,19 @@ if [[ -f dist.tar.gz ]]; then
   tar xf dist.tar.gz --directory=./dist
 fi
 cd -
-docker run -d -p 8080:80 \
+
+docker run -d -p 80:80 -p 443:443 -p 8080:8080\
            --network=network1 \
+           -e PUID=1000 \
+           -e PGID=1000 \
+           -e TZ=Etc/GMT-8 \
+           -e URL=mangosteen2.hunger-valley.com \
+           -e VALIDATION=http \
            --name=$nginx_container_name \
-           -v /home/$user/deploys/$version/nginx.default.conf:/etc/nginx/conf.d/default.conf \
+           -v /home/$user/nginx-config:/config \
+           -v /home/$user/deploys/$version/nginx.default.conf:/config/nginx/site-confs/default \
            -v /home/$user/deploys/$version/dist:/usr/share/nginx/html \
            -v /home/$user/deploys/$version/api:/usr/share/nginx/html/apidoc \
-           nginx:latest
+           linuxserver/swag:latest
 
 title '全部执行完毕'
