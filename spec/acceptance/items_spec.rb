@@ -54,14 +54,14 @@ resource "账目" do
 
   get "/api/v1/items/summary" do
     authentication :basic, :auth
-    parameter :happened_after, "时间起点", required: true
-    parameter :happened_before, "时间终点", required: true
+    parameter :happen_after, "时间起点", required: true
+    parameter :happen_before, "时间终点", required: true
     parameter :kind, "账目类型", enum: ["expenses", "income"], required: true
     parameter :group_by, "分组依据", enum: ["happen_at", "tag_id"], required: true
     response_field :groups, "分组信息"
     response_field :total, "总金额（单位：分）"
-    let(:happened_after) { "2018-01-01" }
-    let(:happened_before) { "2019-01-01" }
+    let(:happen_after) { "2018-01-01" }
+    let(:happen_before) { "2019-01-01" }
     let(:kind) { "expenses" }
     example "统计信息（按happen_at分组）" do
       user = current_user
