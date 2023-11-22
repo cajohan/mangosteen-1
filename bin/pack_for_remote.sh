@@ -37,7 +37,7 @@ if [[ ! -z "$frontend" ]]; then
   title '打包前端代码'
   mkdir -p $frontend_dir
   rm -rf $frontend_dir/repo
-  git clone git@jihulab.com:FrankFang/mangosteen-fe-3.git $frontend_dir/repo
+  git clone git@github.com:cajohan/mangosteen-1-page.git $frontend_dir/repo
   cd $frontend_dir/repo && pnpm install && pnpm run build; cd -
   tar -cz -f "$frontend_dir/dist.tar.gz" -C "$frontend_dir/repo/dist" .
 fi
