@@ -15,7 +15,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def create
     # tag_ids [] 数组要写后面
-    item = Item.new params.permit(:amount, :happened_at, :kind, tag_ids: [])
+    item = Item.new params.permit(:amount, :happen_at, :happened_at, :kind, tag_ids: [])
     item.user_id = request.env['current_user_id']
     if item.save
       render json: { resource: item }
