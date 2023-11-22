@@ -1,9 +1,6 @@
 class Api::V1::ItemsController < ApplicationController
   def index
     current_user_id = request.env['current_user_id']
-    # 如果 params[:happen_after] 存在就用它，否则就用 params[:happened_after]
-    start_time = params[:happen_after].presence || params[:happened_after]
-    end_time = params[:happen_before].presence || params[:happened_before]
     return head :unauthorized if current_user_id.nil?
     items = Item.where(user_id: current_user_id)
       .where(
@@ -33,7 +30,7 @@ class Api::V1::ItemsController < ApplicationController
     current_user_id = request.env["current_user_id"]
     return head :unauthorized if current_user_id.nil?
     items = Item.where({ user_id: current_user_id })
-      .where({ happen_at: params[:happen_after]..params[:happen_before] })
+      .where({ happen_at: start_time..end_time })
     income_items = []
     expenses_items = []
     items.each {|item|
@@ -53,7 +50,7 @@ class Api::V1::ItemsController < ApplicationController
     items = Item
       .where(user_id: request.env['current_user_id'])
       .where(kind: params[:kind])
-      .where(happen_at: params[:happen_after]..params[:happen_before])
+      .where(happen_at: start_time..end_time)
     tags = []
     items.each do |item|
       # 北京时间“xxxx-xx-xx”
@@ -86,5 +83,16 @@ class Api::V1::ItemsController < ApplicationController
       groups: groups,
       total: items.sum(:amount)
     }
+  end
+  
+  private
+
+  def start_time
+    # 如果 params[:happen_after] 存在就用它，否则就用 params[:happened_after]
+    params[:happen_after].presence || params[:happened_after]
+  end
+
+  def end_time
+    params[:happen_before].presence || params[:happened_before]
   end
 end
