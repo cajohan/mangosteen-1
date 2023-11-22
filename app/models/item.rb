@@ -13,6 +13,8 @@ class Item < ApplicationRecord
 
   validate :check_tag_ids_belong_to_user
 
+  alias_attribute :happen_at, :happened_at
+
   def check_tag_ids_belong_to_user
     all_tag_ids = Tag.where(user_id: self.user_id).map(&:id)
     # 如果不在里面
@@ -23,6 +25,10 @@ class Item < ApplicationRecord
 
   def tags
     Tag.where(id: tag_ids)
+  end
+
+  def serializable_hash(options = {})
+    super(options.merge(methods: [:happen_at], include: [:tags]))
   end
   
   def self.default_scope

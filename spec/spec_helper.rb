@@ -14,6 +14,9 @@ RspecApiDocumentation.configure do |config|
       happen_after 参数全都应该重命名为 happen<strong>ed</strong>_after（happen_before 同理）
     </li>
     <li>
+    happen_at 全都应该重命名为 happen<strong>ed</strong>_at （目前会同时输出这两个字段）
+    </li>
+    <li>
       表单错误时，后端会返回
         <pre><code>{
   "errors": {
