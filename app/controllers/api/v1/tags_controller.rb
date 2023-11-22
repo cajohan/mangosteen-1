@@ -7,7 +7,7 @@ class Api::V1::TagsController < ApplicationController
     render json: { resources: tags, pager:{
       page: params[:page] || 1,
       per_page: Tag.default_per_page,
-      count: Tag.where(user_id: current_user.id).count
+      count: tags.count
     } }
   end
 
