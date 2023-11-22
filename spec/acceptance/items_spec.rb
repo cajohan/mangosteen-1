@@ -41,7 +41,7 @@ resource "账目" do
     end
     let(:amount) { 9900 }
     let(:kind) { "expenses" }
-    let(:happen_at) { "2020-10-30T00:00:00+08:00" }
+    let(:happened_at) { "2020-10-30T00:00:00+08:00" }
     let(:tags) { (0..1).map { create :tag, user: current_user } }
     let(:tag_ids) { tags.map(&:id) }
     let(:happen_at) { "2020-10-30T00:00:00+08:00" }
@@ -64,6 +64,27 @@ resource "账目" do
     let(:happen_after) { "2018-01-01" }
     let(:happen_before) { "2019-01-01" }
     let(:kind) { "expenses" }
+    example "统计信息（按happened_at分组）" do
+      user = current_user
+      tag = create :tag, user: user
+      create :item, amount: 100, kind: "expenses", tag_ids: [tag.id], happened_at: "2018-06-18T00:00:00+08:00", user: user
+      create :item, amount: 200, kind: "expenses", tag_ids: [tag.id], happened_at: "2018-06-18T00:00:00+08:00", user: user
+      create :item, amount: 100, kind: "expenses", tag_ids: [tag.id], happened_at: "2018-06-20T00:00:00+08:00", user: user
+      create :item, amount: 200, kind: "expenses", tag_ids: [tag.id], happened_at: "2018-06-20T00:00:00+08:00", user: user
+      create :item, amount: 100, kind: "expenses", tag_ids: [tag.id], happened_at: "2018-06-19T00:00:00+08:00", user: user
+      create :item, amount: 200, kind: "expenses", tag_ids: [tag.id], happened_at: "2018-06-19T00:00:00+08:00", user: user
+      do_request group_by: "happened_at"
+      expect(status).to eq 200
+      json = JSON.parse response_body
+      expect(json["groups"].size).to eq 3
+      expect(json["groups"][0]["happened_at"]).to eq "2018-06-18"
+      expect(json["groups"][0]["amount"]).to eq 300
+      expect(json["groups"][1]["happened_at"]).to eq "2018-06-19"
+      expect(json["groups"][1]["amount"]).to eq 300
+      expect(json["groups"][2]["happened_at"]).to eq "2018-06-20"
+      expect(json["groups"][2]["amount"]).to eq 300
+      expect(json["total"]).to eq 900
+    end
     example "统计信息（按happen_at分组）" do
       user = current_user
       tag = create :tag, user: user
@@ -77,11 +98,11 @@ resource "账目" do
       expect(status).to eq 200
       json = JSON.parse response_body
       expect(json["groups"].size).to eq 3
-      expect(json["groups"][0]["happen_at"]).to eq "2018-06-18"
+      expect(json["groups"][0]["happen_at"]).to eq "2018-06-20"
       expect(json["groups"][0]["amount"]).to eq 300
       expect(json["groups"][1]["happen_at"]).to eq "2018-06-19"
       expect(json["groups"][1]["amount"]).to eq 300
-      expect(json["groups"][2]["happen_at"]).to eq "2018-06-20"
+      expect(json["groups"][2]["happen_at"]).to eq "2018-06-18"
       expect(json["groups"][2]["amount"]).to eq 300
       expect(json["total"]).to eq 900
     end
