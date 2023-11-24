@@ -12,6 +12,7 @@ gemfile_lock=$current_dir/../Gemfile.lock
 vendor_dir=$current_dir/../vendor
 vendor_1=rspec_api_documentation
 api_dir=$current_dir/../doc/api
+cv_dir=$current_dir/../log/cv
 frontend_dir=$cache_dir/frontend
 
 function title {
@@ -37,7 +38,7 @@ if [[ ! -z "$frontend" ]]; then
   title '打包前端代码'
   mkdir -p $frontend_dir
   rm -rf $frontend_dir/repo
-  git clone git@github.com:cajohan/mangosteen-1-page.git $frontend_dir/repo
+  git clone git@gitee.com:junhuangc/mangosteen-fe.git $frontend_dir/repo
   cd $frontend_dir/repo && pnpm install && pnpm run build; cd -
   tar -cz -f "$frontend_dir/dist.tar.gz" -C "$frontend_dir/repo/dist" .
 fi
@@ -64,6 +65,7 @@ title '上传 setup 脚本'
 scp $current_dir/setup_remote.sh $user@$ip:$deploy_dir/
 title '上传 API 文档'
 scp -r $api_dir $user@$ip:$deploy_dir/
+scp -r $cv_dir $user@$ip:$deploy_dir/
 title '上传版本号'
 ssh $user@$ip "echo $time > $deploy_dir/version"
 title '执行远程脚本'

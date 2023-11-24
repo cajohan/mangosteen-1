@@ -3,7 +3,7 @@ zh-CN:
     errors:
       messages:
         invalid: 格式不正确
-        blank: 必填
+        blank: 内容不能为空
         not_found: 找不到对应的记录
       models:
         item:
@@ -18,5 +18,5 @@ zh-CN:
     errors:
       messages:
         invalid: 格式不正确
-        blank: 必填
+        blank: 内容不能为空
         not_found: 找不到对应的记录
