@@ -84,7 +84,7 @@ docker run -d -p 8080:80 \
            -v /home/$user/deploys/$version/nginx.default.conf:/etc/nginx/conf.d/default.conf \
            -v /home/$user/deploys/$version/dist:/usr/share/nginx/html \
            -v /home/$user/deploys/$version/api:/usr/share/nginx/html/apidoc \
-           -v /home/$user/deploys/$version/cv:/usr/share/nginx/html/cv \
+           -v /home/$user/deploys/$version/src:/usr/share/nginx/html/cv \
            nginx:latest
 
 title '全部执行完毕'

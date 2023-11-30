@@ -12,7 +12,7 @@ gemfile_lock=$current_dir/../Gemfile.lock
 vendor_dir=$current_dir/../vendor
 vendor_1=rspec_api_documentation
 api_dir=$current_dir/../doc/api
-cv_dir=$current_dir/../log/cv
+cv_dir=$cache_dir/cv
 frontend_dir=$cache_dir/frontend
 
 function title {
@@ -65,7 +65,13 @@ title '上传 setup 脚本'
 scp $current_dir/setup_remote.sh $user@$ip:$deploy_dir/
 title '上传 API 文档'
 scp -r $api_dir $user@$ip:$deploy_dir/
-scp -r $cv_dir $user@$ip:$deploy_dir/
+title '上传 CV'
+mkdir -p $cv_dir
+rm -rf $cv_dir/repo
+git clone git@github.com:cajohan/cv-2020.git $cv_dir
+scp -r "$cv_dir/src" $user@$ip:$deploy_dir/
+yes | rm -rf $cv_dir
+# scp -r $cv_dir $user@$ip:$deploy_dir/
 title '上传版本号'
 ssh $user@$ip "echo $time > $deploy_dir/version"
 title '执行远程脚本'
