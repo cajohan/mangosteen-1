@@ -68,7 +68,7 @@ scp -r $api_dir $user@$ip:$deploy_dir/
 title '上传 CV'
 mkdir -p $cv_dir
 rm -rf $cv_dir/repo
-git clone git@github.com:cajohan/cv-2020.git $cv_dir
+git clone git@gitee.com:junhuangc/cv.git $cv_dir
 scp -r "$cv_dir/src" $user@$ip:$deploy_dir/
 yes | rm -rf $cv_dir
 # scp -r $cv_dir $user@$ip:$deploy_dir/
