@@ -78,13 +78,14 @@ if [[ -f dist.tar.gz ]]; then
 fi
 cd -
 
-docker run -d -p 8080:80 \
+docker run -d -p 80:80 -p 443:443 -p 8080:8080 \
            --network=network1 \
            --name=$nginx_container_name \
            -v /home/$user/deploys/$version/nginx.default.conf:/etc/nginx/conf.d/default.conf \
            -v /home/$user/deploys/$version/dist:/usr/share/nginx/html \
            -v /home/$user/deploys/$version/api:/usr/share/nginx/html/apidoc \
            -v /home/$user/deploys/$version/src:/usr/share/nginx/html/cv \
+           -v /home/$user/cert/fk:/etc/nginx/cert \
            nginx:latest
 
 title '全部执行完毕'
