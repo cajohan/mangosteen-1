@@ -34,7 +34,7 @@ title "打包本地依赖 ${vendor_1}"
 bundle cache --quiet
 tar -cz -f "$vendor_dir/cache.tar.gz" -C ./vendor cache
 tar -cz -f "$vendor_dir/$vendor_1.tar.gz" -C ./vendor $vendor_1
-if [[ ! -z "$frontend" ]]; then
+if [[ ! -z "$frontend_dir" ]]; then
   title '打包前端代码'
   mkdir -p $frontend_dir
   rm -rf $frontend_dir/repo
@@ -53,7 +53,7 @@ scp -r $vendor_dir/cache.tar.gz $user@$ip:$deploy_dir/vendor/
 yes | rm $vendor_dir/cache.tar.gz
 scp -r $vendor_dir/$vendor_1.tar.gz $user@$ip:$deploy_dir/vendor/
 yes | rm $vendor_dir/$vendor_1.tar.gz
-if [[ ! -z "$frontend" ]]; then
+if [[ ! -z "$frontend_dir" ]]; then
   title '上传前端代码'
   scp "$frontend_dir/dist.tar.gz" $user@$ip:$deploy_dir/
   yes | rm -rf $frontend_dir
